@@ -2,7 +2,7 @@ name: "Start Terraform Infrastructure"
 
 on:
   repository_dispatch:
-    branches: main 
+    branches: master 
     types: apprecode-project1-build
   workflow_dispatch:
  
