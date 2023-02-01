@@ -1,0 +1,10 @@
+# terraform files ignored
+.terraform/
+*.tfstate
+terraform.tfstate*
+.terragrunt-cache/
+.terraform.lock.hcl
+
+# emacs bckp files ignored
+*~
+#*
