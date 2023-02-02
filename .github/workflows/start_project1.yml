@@ -3,7 +3,7 @@ name: "Start Terraform Infrastructure"
 on:
   repository_dispatch:
     branches: master 
-    types: apprecode-project1-build
+    types: apprecode-site-build
   workflow_dispatch:
  
 jobs:
@@ -14,7 +14,7 @@ jobs:
      run:
        shell: bash
        # We keep Terraform files in the terraform directory.
-       working-directory: ./project1
+       working-directory: ./${{ github.event.client_payload.client }}
  
    steps:
      - name: Checkout the repository to the runner
