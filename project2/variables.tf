@@ -47,3 +47,6 @@ output "ecs_services" {
   value = var.ecs_services
 }
 
+output "client" {
+  value = "project2"
+}
