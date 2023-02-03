@@ -1,14 +1,14 @@
-name: "Start Terraform Infrastructure"
+name: "Destroy Terraform Infrastructure"
 
 on:
   repository_dispatch:
     branches: master 
-    types: apprecode-site-build
+    types: apprecode-site-destroy
   workflow_dispatch:
  
 jobs:
- terraform_apply:
-   name: "tf_apply"
+ terraform_destroy:
+   name: "tf_destroy"
    runs-on: ubuntu-latest
    defaults:
      run:
@@ -34,10 +34,6 @@ jobs:
          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
          terraform init
 
-     - name: Terraform validate
-       id: validate
-       run: terraform validate
- 
      - name: create-json
        id: create-json
        uses: jsdaniell/create-json@v1.2.2
@@ -45,25 +41,9 @@ jobs:
          name: "tfvars.json"
          json: "${{ toJson(github.event.client_payload.vars) }}"
 
-     - name: List files in the repository
-       run: |
-           ls ${{ github.workspace }}
-     
-     - name: Terraform plan
-       id: plan
+     - name: Terraform destroy
+       id: destroy
        run: |
          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         terraform plan -no-color -var-file=../tfvars.json
-       continue-on-error: true
- 
-     - name: Terraform Plan Status
-       if: steps.plan.outcome == 'failure'
-       run: exit 1
- 
-     - name: Terraform apply
-       id: apply
-       run: |
-         export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-         export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         terraform apply -auto-approve -var-file=../tfvars.json
+         terraform destroy -auto-approve -var-file=../tfvars.json
